@@ -1,0 +1,23 @@
+{
+    "name": "shipperhq/module-shq-product-page",
+    "description": "ShipperHQ Product Page Estimator Module - By the ShipperHQ Team",
+    "version": "1.0.0",
+    "require": {
+        "php": "~7.3",
+        "shipperhq/library-ws": "20.*",
+        "shipperhq/module-logger": "*",
+        "shipperhq/module-shq-server": "*"
+    },
+    "type": "magento2-module",
+    "license": [
+        "BSD-3-Clause"
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "ShipperHQ\\ProductPage\\": ""
+        }
+    }
+}
