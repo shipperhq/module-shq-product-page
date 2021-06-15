@@ -14,12 +14,13 @@ namespace ShipperHQ\ProductPage\Block\Frontend\ProductView;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Context;
 use ShipperHQ\ProductPage\Api\Data\ProductPageConfigInterface;
-use ShipperHQ\Server\Model\Api\Data\SHQServer;
+use ShipperHQ\ProductPage\Api\Data\SHQShippingConfigInterface;
+use ShipperHQ\ProductPage\Api\Data\SHQShippingConfigInterfaceFactory;
 
 class Settings extends AbstractBlock
 {
     /**
-     * @var SHQServer
+     * @var SHQShippingConfigInterface
      */
     protected $config;
 
@@ -31,17 +32,17 @@ class Settings extends AbstractBlock
     /**
      * Settings constructor.
      * @param Context $context
-     * @param SHQServer $config
+     * @param SHQShippingConfigInterfaceFactory $config
      * @param ProductPageConfigInterface $productPageConfig
      */
     public function __construct(
         Context $context,
-        SHQServer $config,
+        SHQShippingConfigInterfaceFactory $config,
         ProductPageConfigInterface $productPageConfig
     )
     {
         parent::__construct($context);
-        $this->config = $config;
+        $this->config = $config->create();
         $this->productPageConfig = $productPageConfig;
     }
 

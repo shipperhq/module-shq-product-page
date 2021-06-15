@@ -23,16 +23,16 @@ use Magento\Framework\DataObject;
 use Magento\Framework\Registry;
 use Magento\Quote\Model\Quote\Item\Processor;
 use ShipperHQ\GraphQL\Types\Input\RMSCart;
-use ShipperHQ\ProductPage\Api\Data\ProductOptionsInterface;
 use ShipperHQ\ProductPage\Api\Data\ProductOptionsInterfaceFactory;
+use ShipperHQ\ProductPage\Api\Data\SHQShippingConfigInterface;
+use ShipperHQ\ProductPage\Api\Data\SHQShippingConfigInterfaceFactory;
 use ShipperHQ\ProductPage\Api\ProductOptionsManagementInterface;
-use ShipperHQ\Server\Model\Api\Data\SHQServer;
-use ShipperHQ\Server\Model\Carrier\Processor\ShipperMapper;
+use ShipperHQ\ProductPage\Model\Processor\ShipperMapper;
 
 class ProductOptionsManagement implements ProductOptionsManagementInterface
 {
     /**
-     * @var SHQServer
+     * @var SHQShippingConfigInterface
      */
     protected $config;
 
@@ -73,20 +73,27 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
 
     /**
      * Settings constructor.
-     * @param SHQServer $config
+     * @param ProductOptionsInterfaceFactory $productOptionsFactory
+     * @param CountryInformationAcquirerInterface $countryInformation
+     * @param ProductRepositoryInterface $productRepository
+     * @param Registry $coreRegistry
+     * @param Processor $itemProcessor
+     * @param Session $checkoutSession
+     * @param ShipperMapper $productMapper
+     * @param SHQShippingConfigInterfaceFactory $config
      */
     public function __construct(
-        SHQServer $config,
         ProductOptionsInterfaceFactory $productOptionsFactory,
         CountryInformationAcquirerInterface $countryInformation,
         ProductRepositoryInterface $productRepository,
         Registry $coreRegistry,
         Processor $itemProcessor,
         Session $checkoutSession,
-        ShipperMapper $productMapper
+        ShipperMapper $productMapper,
+        SHQShippingConfigInterfaceFactory $config
     )
     {
-        $this->config = $config;
+        $this->config = $config->create();
         $this->productOptionsFactory = $productOptionsFactory;
         $this->countryInformation = $countryInformation;
         $this->productRepository = $productRepository;
@@ -106,12 +113,8 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
         $options = $this->productOptionsFactory->create();
         $options->setSessionId($this->getSessionId());
         $options->setPublicToken($this->config->getPublicToken());
-
         $options->setCart(
-            Serializer::serialize(
-                $this->getCart($product, $buyRequest),
-                0
-            )
+            $this->getCart($product, $buyRequest)
         );
 
         $options->setQuoteCurrencyCode($this->getCurrency($product));
@@ -133,13 +136,19 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
     {
         $packageValue = 0;
 
-        $cart = new RMSCart(
-            $this->getCartItems($product, $buyRequest),
-            $packageValue,
-            false
-        );
+        $items = $this->getCartItems($product, $buyRequest);
 
-        return $cart;
+        if(is_string($items)) { // not all options are selected - produces error
+            return $items;
+        } else {
+            $cart = new RMSCart(
+                $items,
+                $packageValue,
+                false
+            );
+
+            return Serializer::serialize($cart, 0);
+        }
     }
 
     /**

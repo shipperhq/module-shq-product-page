@@ -1,12 +1,25 @@
 {
     "name": "shipperhq/module-shq-product-page",
-    "description": "ShipperHQ Product Page Estimator Module - By the ShipperHQ Team",
-    "version": "1.0.0",
+    "description": "ShipperHQ Product Page Calculator Module - By the ShipperHQ Team",
+    "version": "20.0.0",
     "require": {
-        "php": "~7.3",
+        "php": "~7.0",
+        "magento/framework": ">=100.0",
+        "magento/module-authorization": ">=100.0",
+        "magento/module-backend": ">=100.0",
+        "magento/module-catalog": ">=101.0",
+        "magento/module-checkout": ">=100.0",
+        "magento/module-config": ">=100.0",
+        "magento/module-customer": ">=100.0",
+        "magento/module-eav": ">=100.0",
+        "magento/module-quote": ">=100.0",
+        "magento/module-shipping": ">=100.0",
+        "magento/module-store": ">=100.0",
+        "psr/log": "^1.0",
         "shipperhq/library-ws": "20.*",
         "shipperhq/module-logger": "*",
-        "shipperhq/module-shq-server": "*"
+        "shipperhq/library-graphql": "^20.1.0",
+        "lcobucci/jwt": "~3.4.2"
     },
     "type": "magento2-module",
     "license": [
