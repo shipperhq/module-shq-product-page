@@ -1,6 +1,6 @@
 # module-shq-productpage
 
-Magento 2 Luma theme integration for the Product Page Shipping Estimator
+Magento 2 Luma theme integration for the Product Page Shipping Calculator
 
 ### Requirements
 
