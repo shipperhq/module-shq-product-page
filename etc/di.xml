@@ -13,5 +13,9 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="ShipperHQ\ProductPage\Api\Data\ProductPageConfigInterface"
                 type="ShipperHQ\ProductPage\Model\Api\Data\ProductPageConfig"/>
+    <preference for="ShipperHQ\ProductPage\Api\ProductOptionsManagementInterface"
+                type="ShipperHQ\ProductPage\Model\Api\ProductOptionsManagement"/>
+    <preference for="ShipperHQ\ProductPage\Api\Data\ProductOptionsInterface"
+                type="ShipperHQ\ProductPage\Model\Api\Data\ProductOptions"/>
 </config>
 
