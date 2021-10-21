@@ -10,3 +10,7 @@ MNB-1486 Updated client bundle version to v0.1.80
 MNB-1634 handle attribute as array values
 
 
+## 20.0.3 (2021-10-21)
+MNB-1618 support for Magento postcode validation logic
+
+

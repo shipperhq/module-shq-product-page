@@ -58,6 +58,17 @@ interface ProductOptionsInterface
     /**
      * @return string
      */
+    public function getPostCodes();
+
+    /**
+     * @param string $postCodes
+     * @return $this
+     */
+    public function setPostCodes($postCodes);
+
+    /**
+     * @return string
+     */
     public function getQuoteCurrencyCode();
 
     /**

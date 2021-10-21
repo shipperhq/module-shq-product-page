@@ -67,6 +67,22 @@ class ProductOptions extends AbstractModel implements ProductOptionsInterface
     /**
      * @inheritdoc
      */
+    public function getPostCodes()
+    {
+        return $this->getData('postCodes');
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setPostCodes($postCodes)
+    {
+        return $this->setData('postCodes', $postCodes);
+    }
+
+    /**
+     * @inheritdoc
+     */
     public function getCart()
     {
         return $this->getData('cart');

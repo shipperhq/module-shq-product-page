@@ -84,6 +84,14 @@ class ProductPageConfig implements ProductPageConfigInterface
     }
 
     /**
+     * @return string
+     */
+    public function getMaximumAllowedQty()
+    {
+        return $this->config->getValue('carriers/shqserver/pp_maximum_allowed_qty', ScopeInterface::SCOPE_STORE);
+    }
+
+    /**
      * @return null|string
      */
     public function getProductId() {

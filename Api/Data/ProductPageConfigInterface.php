@@ -26,5 +26,10 @@ interface ProductPageConfigInterface
     /**
      * @return string
      */
+    public function getMaximumAllowedQty();
+
+    /**
+     * @return string
+     */
     public function getProductId();
 }

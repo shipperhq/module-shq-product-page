@@ -13,15 +13,18 @@ declare(strict_types=1);
 
 namespace ShipperHQ\ProductPage\Model\Api;
 
-use ShipperHQ\GraphQL\Helpers\Serializer;
 use Magento\Catalog\Api\ProductRepositoryInterface;
 use Magento\Catalog\Model\Product;
+use Magento\CatalogInventory\Helper\Stock;
 use Magento\Checkout\Model\Session;
 use Magento\Directory\Api\CountryInformationAcquirerInterface;
 use Magento\Directory\Api\Data\RegionInformationInterface;
+use Magento\Directory\Model\Country\Postcode\ConfigInterface;
+use Magento\GroupedProduct\Model\Product\Type\Grouped;
 use Magento\Framework\DataObject;
 use Magento\Framework\Registry;
 use Magento\Quote\Model\Quote\Item\Processor;
+use ShipperHQ\GraphQL\Helpers\Serializer;
 use ShipperHQ\GraphQL\Types\Input\RMSCart;
 use ShipperHQ\ProductPage\Api\Data\ProductOptionsInterfaceFactory;
 use ShipperHQ\ProductPage\Api\Data\SHQShippingConfigInterface;
@@ -72,6 +75,17 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
     private $checkoutSession;
 
     /**
+     * @var Stock
+     */
+    private $stockHelper;
+
+
+    /**
+     * @var ConfigInterface
+     */
+    private $postCodesConfig;
+
+    /**
      * Settings constructor.
      * @param ProductOptionsInterfaceFactory $productOptionsFactory
      * @param CountryInformationAcquirerInterface $countryInformation
@@ -81,6 +95,7 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
      * @param Session $checkoutSession
      * @param ShipperMapper $productMapper
      * @param SHQShippingConfigInterfaceFactory $config
+     * @param ConfigInterface $postCodesConfig
      */
     public function __construct(
         ProductOptionsInterfaceFactory $productOptionsFactory,
@@ -90,7 +105,9 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
         Processor $itemProcessor,
         Session $checkoutSession,
         ShipperMapper $productMapper,
-        SHQShippingConfigInterfaceFactory $config
+        SHQShippingConfigInterfaceFactory $config,
+        ConfigInterface $postCodesConfig,
+        Stock $stockHelper
     )
     {
         $this->config = $config->create();
@@ -101,6 +118,8 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
         $this->itemProcessor = $itemProcessor;
         $this->productMapper = $productMapper;
         $this->checkoutSession = $checkoutSession;
+        $this->stockHelper = $stockHelper;
+        $this->postCodesConfig = $postCodesConfig;
     }
 
     /**
@@ -121,6 +140,7 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
 
         if ($variant === 'full') {
             $options->setCountries(\json_encode($this->getCountryList()));
+            $options->setPostCodes(\json_encode($this->postCodesConfig->getPostCodes()));
         }
 
         return $options;
@@ -152,6 +172,42 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
     }
 
     /**
+     * This code prefetches associated products for the grouped products. Only products in stock are loaded.
+     * This is needed because by default Magento will load all of the products, including products which are out of stock.
+     * It will load all products because Magento\CatalogInventory\Model\Plugin\ProductLinks plugin is registered
+     * only for frontend area. So to avoid unexpected side-effects it's probably better to pre-populate the cache
+     * like it's done below.
+     *
+     * @param $product
+     */
+    private function prefetchAssociatedProducts($product) {
+        $associatedProducts = [];
+
+        /** @var Grouped $type */
+        $type = $product->getTypeInstance();
+        $type->setSaleableStatus($product);
+
+        $collection = $type->getAssociatedProductCollection(
+            $product
+        )->setFlag('')->addAttributeToSelect(
+            ['name', 'price', 'special_price', 'special_from_date', 'special_to_date', 'tax_class_id', 'image']
+        )->addFilterByRequiredOptions()->setPositionOrder()->addStoreFilter(
+            $type->getStoreFilter($product)
+        )->addAttributeToFilter(
+            'status',
+            ['in' => $type->getStatusFilters($product)]
+        );
+
+        $this->stockHelper->addInStockFilterToCollection($collection);
+
+        foreach ($collection as $item) {
+            $associatedProducts[] = $item;
+        }
+
+        $product->setData('_cache_instance_associated_products', $associatedProducts);
+    }
+
+    /**
      * @param $product
      * @param string $buyRequestData
      * @return array|string
@@ -168,6 +224,10 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
 
         $request->setProduct($product->getId());
         $request->setItem($product->getId());
+
+        if ($product->getTypeId() === 'grouped') {
+            $this->prefetchAssociatedProducts($product);
+        }
 
         $cartCandidates = $product->getTypeInstance()->prepareForCartAdvanced($request, $product, 'full');
 

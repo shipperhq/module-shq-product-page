@@ -58,6 +58,7 @@ class Settings extends AbstractBlock
             'jsBundleUrl' => $this->productPageConfig->getJsBundleUrl(),
             'cssBundleUrl' => $this->productPageConfig->getCssBundleUrl(),
             'productId' => $this->productPageConfig->getProductId(),
+            'maximumAllowedQty' => (int) $this->productPageConfig->getMaximumAllowedQty(),
         );
 
         return "<script>\n" .
