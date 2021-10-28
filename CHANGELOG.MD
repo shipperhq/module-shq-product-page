@@ -14,3 +14,7 @@ MNB-1634 handle attribute as array values
 MNB-1618 support for Magento postcode validation logic
 
 
+## 20.1.0 (2021-10-28)
+MNB-1598 Add support for bundled products
+
+

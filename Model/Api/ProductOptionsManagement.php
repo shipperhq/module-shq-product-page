@@ -190,7 +190,7 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
         $collection = $type->getAssociatedProductCollection(
             $product
         )->setFlag('')->addAttributeToSelect(
-            ['name', 'price', 'special_price', 'special_from_date', 'special_to_date', 'tax_class_id', 'image']
+            ['name', 'price', 'special_price', 'special_from_date', 'special_to_date', 'tax_class_id', 'image', 'weight']
         )->addFilterByRequiredOptions()->setPositionOrder()->addStoreFilter(
             $type->getStoreFilter($product)
         )->addAttributeToFilter(
