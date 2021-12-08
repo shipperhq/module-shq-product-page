@@ -12,7 +12,7 @@
     <default>
         <carriers>
             <shqserver>
-                <pp_js_bundle_url>https://assets.shipperhq.com/shq-luma-product-page_0.1.87.js</pp_js_bundle_url>
+                <pp_js_bundle_url>https://assets.shipperhq.com/shq-luma-product-page_0.1.91.js</pp_js_bundle_url>
                 <pp_maximum_allowed_qty>1000</pp_maximum_allowed_qty>
             </shqserver>
         </carriers>

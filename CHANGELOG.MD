@@ -18,3 +18,7 @@ MNB-1618 support for Magento postcode validation logic
 MNB-1598 Add support for bundled products
 
 
+## 20.1.1 (2021-12-08)
+MNB-1599 Updated bundle version to 0.1.91
+
+
