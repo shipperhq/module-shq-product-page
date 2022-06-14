@@ -11,11 +11,10 @@
 
 namespace ShipperHQ\ProductPage\Model\Api;
 
-use Lcobucci\JWT\Parser;
+use Lcobucci\JWT\Configuration;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
-use Lcobucci\JWT\Signer\Key;
+use Lcobucci\JWT\Signer\Key\InMemory;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use Lcobucci\JWT\Validation\Validator;
 use Magento\Framework\Stdlib\DateTime\DateTime;
 use ShipperHQ\GraphQL\Client\GraphQLClient;
 use ShipperHQ\GraphQL\Response\CreateSecretToken;
@@ -54,6 +53,9 @@ class Authorization
 
     /** @var Scope */
     private $scopeHelper;
+
+    /** @var Configuration|null */
+    private $jwtConfig = null;
 
     /**
      * Authorization constructor.
@@ -167,7 +169,7 @@ class Authorization
     public function isSecretTokenExpired(): bool
     {
         $currentTime = $this->dateTime->gmtTimestamp();
-        $expirationTime = strtotime($this->getTokenExpires());
+        $expirationTime = strtotime((string) $this->getTokenExpires());
         return $currentTime >= $expirationTime;
     }
 
@@ -179,7 +181,7 @@ class Authorization
     public function isSecretTokenExpiringSoon(): bool
     {
         $currentTime = $this->dateTime->gmtTimestamp();
-        $expirationTime = strtotime($this->getTokenExpires());
+        $expirationTime = strtotime((string) $this->getTokenExpires());
         return ($currentTime + self::SHIPPERHQ_SERVER_EXPIRING_SOON_THRESHOLD) >= $expirationTime;
     }
 
@@ -196,11 +198,10 @@ class Authorization
             $tokenStr = $this->getStoredSecretToken();
         }
 
-        $token = (new Parser())->parse($tokenStr);
-        $validator = new Validator();
-        $signer = new Key($this->getAuthCode());
+        $useConfig = $this->getJTWConfiguration();
+        $token = $useConfig->parser()->parse($tokenStr);
 
-        return $validator->validate($token, new SignedWith(new Sha256(), $signer));
+        return $useConfig->validator()->validate($token, ...$useConfig->validationConstraints());
     }
 
     /**
@@ -284,7 +285,7 @@ class Authorization
      */
     private function persistNewToken(string $tokenStr): bool
     {
-        $token = (new Parser())->parse($tokenStr);
+        $token = $this->getJTWConfiguration()->parser()->parse($tokenStr);
         $verified = $this->isSecretTokenValid($tokenStr);
 
         $currentTime = $this->dateTime->gmtTimestamp();
@@ -461,5 +462,19 @@ class Authorization
             return true;
         }
         return false;
+    }
+
+    private function getJTWConfiguration(): Configuration
+    {
+        if ($this->jwtConfig === null) {
+            $this->jwtConfig = Configuration::forSymmetricSigner(
+                new Sha256(),
+                InMemory::plainText($this->getAuthCode())
+            );
+            $this->jwtConfig->setValidationConstraints(
+                new SignedWith($this->jwtConfig->signer(), $this->jwtConfig->verificationKey())
+            );
+        }
+        return $this->jwtConfig;
     }
 }

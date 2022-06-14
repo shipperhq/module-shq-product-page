@@ -179,7 +179,7 @@ class ShipperMapper
                 $storeId
             ),
             'appVersion' => $this->scopeConfig->getValue('carriers/shqserver/extension_version', 'store', $storeId),
-            'ipAddress' => is_null($ipAddress) ? $mobilePrepend : $mobilePrepend . $ipAddress
+            'ipAddress' => $ipAddress === null ? $mobilePrepend : $mobilePrepend . $ipAddress
         ]);
         return $siteDetails;
     }
@@ -249,7 +249,7 @@ class ShipperMapper
         if (preg_match($uaSignatures, $data)) {
             return true;
         }
-        $mobile_ua = strtolower(substr($data, 0, 4));
+        $mobile_ua = strtolower(substr((string) $data, 0, 4));
         $mobile_agents = [
             'w3c ',
             'acs-',
@@ -469,7 +469,7 @@ class ShipperMapper
             $item->getPrice() ? (float)$item->getPrice() : 0,
             $weight,
             $adjustedQty,
-            strtoupper($type),
+            strtoupper((string) $type),
             $item->getPriceInclTax() ? (float)$item->getPriceInclTax() : 0,
             (bool)$item->getFreeShipping(),
             (bool)$fixedPrice,
@@ -521,7 +521,7 @@ class ShipperMapper
         if ($region === null) { //SHQ16-2098
             $region = "";
         }
-        $street = explode("\n", $request->getDestStreet());
+        $street = explode("\n", (string) $request->getDestStreet());
         $street1 = array_shift($street);
         $street2 = implode(" ", $street);
 
@@ -597,7 +597,7 @@ class ShipperMapper
         $attributes = [];
         $product = $item->getProduct();
         $reqdAttributeNames = self::$stdAttributeNames;
-        if ($product->getAttributeText(self::$dim_group) != '') {
+        if ($product->getResource()->getAttribute(self::$dim_group) && $product->getAttributeText(self::$dim_group) != '') {
             $reqdAttributeNames = array_diff(self::$stdAttributeNames, self::$conditional_dims);
         }
 
@@ -610,7 +610,7 @@ class ShipperMapper
             }
             if ($attributeType == 'select' || $attributeType == 'multiselect') {
                 $attributeString = $product->getData($attribute->getAttributeCode());
-                $attributeValue = explode(',', $attributeString);
+                $attributeValue = explode(',', (string) $attributeString);
                 if (is_array($attributeValue)) {
                     $valueString = [];
                     foreach ($attributeValue as $aValue) {

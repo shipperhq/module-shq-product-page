@@ -76,7 +76,7 @@ class Config
         }
 
         $args = array_filter([$path, $value, $scope, $scopeId], function ($e) {
-            return !is_null($e);
+            return $e !== null;
         });
         $this->configWriter->save(...$args);
         $this->localConfig->setValue(...$args);

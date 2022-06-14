@@ -22,3 +22,7 @@ MNB-1598 Add support for bundled products
 MNB-1599 Updated bundle version to 0.1.91
 
 
+## 20.2.0 (2022-06-14)
+MNB-2430 Magento 2.4.4 / PHP 8.1 compatibility
+
+
