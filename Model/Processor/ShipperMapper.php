@@ -466,6 +466,7 @@ class ShipperMapper
         $itemType = new RMSItem(
             $item->getId(),
             $item->getSku(),
+            $item->getName(),
             $item->getPrice() ? (float)$item->getPrice() : 0,
             $weight,
             $adjustedQty,

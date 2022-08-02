@@ -26,3 +26,7 @@ MNB-1599 Updated bundle version to 0.1.91
 MNB-2430 Magento 2.4.4 / PHP 8.1 compatibility
 
 
+## 20.2.1 (2022-08-02)
+MNB-2844 Resolve issue with missing parameter
+
+
