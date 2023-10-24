@@ -30,3 +30,7 @@ MNB-2430 Magento 2.4.4 / PHP 8.1 compatibility
 MNB-2844 Resolve issue with missing parameter
 
 
+## 20.2.2 (2023-10-24)
+SHQ23-1275 prefetch SHQ attributes for the grouped product associations
+
+

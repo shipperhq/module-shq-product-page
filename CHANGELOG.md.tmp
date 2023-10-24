@@ -1,0 +1,43 @@
+# Change Log
+
+## [1.18.0](https://gitlab.com/ShipperHQ/Frontend/ShipperHQ/tree/1.18.0) (2023-10-24)
+[Full Changelog](https://gitlab.com/ShipperHQ/Frontend/ShipperHQ/-/compare/20.2.1...develop)
+
+## [20.2.1](https://gitlab.com/shipperhq/platform/m2/module-shq-product-page/tree/20.2.1) (2022-08-02)
+[Full Changelog](https://gitlab.com/shipperhq/platform/m2/module-shq-product-page/-/compare/20.2.0...develop)
+ - [MNB-2844](https://webshopapps.atlassian.net/browse/MNB-2844) Add missing parameter to RMSItem [\#10](https://gitlab.com/shipperhq/platform/m2/module-shq-product-page/-/merge_requests/10) ([wsajosh](https://gitlab.com/wsajosh))
+
+## [20.2.0](https://gitlab.com/shipperhq/platform/m2/module-shq-product-page/tree/20.2.0) (2022-06-14)
+[Full Changelog](https://gitlab.com/shipperhq/platform/m2/module-shq-product-page/-/compare/20.1.1...develop)
+
+## [20.1.1](https://github.com/webshopapps/module-shq-product-page/tree/20.1.1) (2021-12-08)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/20.1.0...HEAD)
+ - [MNB-1599](https://webshopapps.atlassian.net/browse/MNB-1599) Updated bundle version to 0.1.91 [\#8](https://github.com/webshopapps/module-shq-product-page/pull/8) ([wsajason](https://github.com/wsajason))
+
+
+## [20.1.0](https://github.com/webshopapps/module-shq-product-page/tree/20.1.0) (2021-10-28)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/20.0.3...HEAD)
+ - [MNB-1598](https://webshopapps.atlassian.net/browse/MNB-1598) select weight for the grouped products [\#7](https://github.com/webshopapps/module-shq-product-page/pull/7) ([stansm](https://github.com/stansm))
+
+
+## [20.0.3](https://github.com/webshopapps/module-shq-product-page/tree/20.0.3) (2021-10-21)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/20.0.1...HEAD)
+ - [MNB-1618](https://webshopapps.atlassian.net/browse/MNB-1618) support for Magento postcode validation logic [\#5](https://github.com/webshopapps/module-shq-product-page/pull/5) ([stansm](https://github.com/stansm))
+ - [MNB-1617](https://webshopapps.atlassian.net/browse/MNB-1617) added pp_maximum_allowed_qty option [\#6](https://github.com/webshopapps/module-shq-product-page/pull/6) ([stansm](https://github.com/stansm))
+ - [MNB-1598](https://webshopapps.atlassian.net/browse/MNB-1598) Grouped Products [\#4](https://github.com/webshopapps/module-shq-product-page/pull/4) ([stansm](https://github.com/stansm))
+ - [MNB-1634](https://webshopapps.atlassian.net/browse/MNB-1634) handle attribute as array values [\#3](https://github.com/webshopapps/module-shq-product-page/pull/3) ([wsagen](https://github.com/wsagen))
+
+
+## [20.0.1](https://github.com/webshopapps/module-shq-product-page/tree/20.0.1) (2021-09-09)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/20.0.0...HEAD)
+ - [MNB-1634](https://webshopapps.atlassian.net/browse/MNB-1634) handle attribute as array values [\#3](https://github.com/webshopapps/module-shq-product-page/pull/3) ([wsagen](https://github.com/wsagen))
+
+
+## [20.0.0](https://github.com/webshopapps/module-shq-product-page/tree/20.0.0) (2021-07-28)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/19.0.0...HEAD)
+
+
+## [1.0.0](https://github.com/webshopapps/module-shq-product-page/tree/1.0.0) (2021-07-28)
+[Full Changelog](https://github.com/webshopapps/module-shq-product-page/compare/0.0.1...HEAD)
+
+

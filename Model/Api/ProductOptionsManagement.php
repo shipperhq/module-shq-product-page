@@ -34,6 +34,54 @@ use ShipperHQ\ProductPage\Model\Processor\ShipperMapper;
 
 class ProductOptionsManagement implements ProductOptionsManagementInterface
 {
+    private static $magentoAttributeNames = [
+        'name',
+        'price',
+        'special_price',
+        'special_from_date',
+        'special_to_date',
+        'tax_class_id',
+        'image',
+        'weight'
+    ];
+
+    private static $conditionalDims = [
+        'shipperhq_poss_boxes',
+        'shipperhq_volume_weight',
+        'ship_box_tolerance',
+        'ship_separately'
+    ];
+
+    private static $stdAttributeNames = [
+        'shipperhq_shipping_group',
+        'shipperhq_warehouse',
+        'shipperhq_availability_date',
+        'shipperhq_post_shipping_group',
+        'shipperhq_location',
+        'shipperhq_royal_mail_group',
+        'shipperhq_shipping_qty',
+        'shipperhq_shipping_fee',
+        'shipperhq_additional_price',
+        'freight_class',
+        'shipperhq_nmfc_class',
+        'shipperhq_nmfc_sub',
+        'shipperhq_handling_fee',
+        'shipperhq_carrier_code',
+        'shipperhq_volume_weight',
+        'shipperhq_declared_value',
+        'ship_separately',
+        'shipperhq_dim_group',
+        'shipperhq_poss_boxes',
+        'shipperhq_master_boxes',
+        'ship_box_tolerance',
+        'must_ship_freight',
+        'packing_section_name',
+        'ship_height',
+        'ship_length',
+        'ship_width',
+        'shipperhq_location'
+    ];
+
     /**
      * @var SHQShippingConfigInterface
      */
@@ -172,6 +220,18 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
     }
 
     /**
+     * Returns attributes to prefetch for the grouped products.
+     * @return string[]
+     */
+    private function getAttributesForSelect() {
+        return array_merge(
+            self::$magentoAttributeNames,
+            self::$stdAttributeNames,
+            self::$conditionalDims
+        );
+    }
+
+    /**
      * This code prefetches associated products for the grouped products. Only products in stock are loaded.
      * This is needed because by default Magento will load all of the products, including products which are out of stock.
      * It will load all products because Magento\CatalogInventory\Model\Plugin\ProductLinks plugin is registered
@@ -190,7 +250,7 @@ class ProductOptionsManagement implements ProductOptionsManagementInterface
         $collection = $type->getAssociatedProductCollection(
             $product
         )->setFlag('')->addAttributeToSelect(
-            ['name', 'price', 'special_price', 'special_from_date', 'special_to_date', 'tax_class_id', 'image', 'weight']
+            $this->getAttributesForSelect()
         )->addFilterByRequiredOptions()->setPositionOrder()->addStoreFilter(
             $type->getStoreFilter($product)
         )->addAttributeToFilter(
