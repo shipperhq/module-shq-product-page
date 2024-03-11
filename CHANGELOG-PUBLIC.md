@@ -34,3 +34,7 @@ MNB-2844 Resolve issue with missing parameter
 SHQ23-1275 prefetch SHQ attributes for the grouped product associations
 
 
+## 20.2.3 (2024-03-11)
+SHQ23-2117 Updated bundles to 0.1.128
+
+

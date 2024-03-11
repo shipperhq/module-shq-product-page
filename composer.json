@@ -1,7 +1,7 @@
 {
     "name": "shipperhq/module-shq-product-page",
     "description": "ShipperHQ Product Page Calculator Module - By the ShipperHQ Team",
-    "version": "20.2.2",
+    "version": "20.2.3",
     "require": {
         "magento/framework": ">=100.0",
         "magento/module-authorization": ">=100.0",
