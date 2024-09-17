@@ -1,0 +1,31 @@
+include:
+  - project: ShipperHQ/DevOps/GitLabTemplates
+    ref: INFRA-672
+    file: /magento/release.gitlab-ci.yml
+
+stages:
+  - tag
+  - release to GitLab
+  - release to GitHub
+
+# Denote whether to build major, minor or patch release
+major release:
+  stage: tag
+  variables:
+    VERSION_INCREMENT: "major"
+  extends:
+    - .m2_module_release
+
+minor release:
+  stage: tag
+  variables:
+    VERSION_INCREMENT: "minor"
+  extends:
+    - .m2_module_release
+
+patch release:
+  stage: tag
+  variables:
+    VERSION_INCREMENT: "patch"
+  extends:
+    - .m2_module_release

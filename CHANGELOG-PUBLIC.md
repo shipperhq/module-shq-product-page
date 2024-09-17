@@ -38,3 +38,7 @@ SHQ23-1275 prefetch SHQ attributes for the grouped product associations
 SHQ23-2117 Updated bundles to 0.1.128
 
 
+## 20.2.4 (2024-09-17)
+SHQ23-3524 Remove unnecessary composer dependencies
+
+
