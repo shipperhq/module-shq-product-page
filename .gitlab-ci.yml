@@ -1,6 +1,6 @@
 include:
   - project: ShipperHQ/DevOps/GitLabTemplates
-    ref: INFRA-672
+    ref: main
     file: /magento/release.gitlab-ci.yml
 
 stages:

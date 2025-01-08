@@ -42,3 +42,7 @@ SHQ23-2117 Updated bundles to 0.1.128
 SHQ23-3524 Remove unnecessary composer dependencies
 
 
+## 20.2.5 (2025-01-08)
+SHQ23-4085 Update readme
+
+
